@@ -13,6 +13,7 @@
         <button>ดูการ์ดทั้งหมด</button>
       </a> -->
 
+      <!-- test push -->
 
       <NuxtLink to="/create-card">
         <button>เขียนการ์ดอวยพร</button>
