@@ -22,7 +22,7 @@ button {
   position: fixed;
   bottom: -180px;
   left: -130px;
-  z-index: -1;
+  z-index: 1;
 }
 
 .f-bt-r {
@@ -35,7 +35,7 @@ button {
     filter: fliph; /*IE*/
   bottom: -180px;
   right: -130px;
-  z-index: -1;
+  z-index: 1;
 }
 
 @media (max-width: 1170px) {

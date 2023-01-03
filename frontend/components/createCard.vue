@@ -90,11 +90,11 @@
                 <textarea name="message" id="" cols="30" rows="10"></textarea>
         </div> -->
         <div class="f-bt-l">
-            <img src="../assets/img/flower.png" alt="">
+            <img src="/assets/img/flower.png" alt="">
         </div>
 
         <div class="f-bt-r">
-            <img src="../assets/img/flower.png" alt="">
+            <img src="/assets/img/flower.png" alt="">
         </div>
     </div>
 </template>
@@ -118,8 +118,8 @@ export default {
     data() {
         return {
             isActive: 0,   
-            // cardUrl: "/_nuxt/img/card1.jpg", 
-            cardUrl: "/library/demo/_nuxt/img/card7.jpg", 
+            // cardUrl: "/img/card1.jpg", 
+            cardUrl: process.env.ASSETS_PATH_IMG + "card7.jpg", 
             name: null,
             organization: null,
             tel: null,
@@ -142,6 +142,7 @@ export default {
         loading.style.display = 'none';
         localStorage.removeItem("dataURL");
         localStorage.removeItem("cards");
+        console.log("env = ",process.env.HOME_PATH);
     },
     methods: {
         fileUploaded() {
@@ -179,7 +180,7 @@ export default {
             inputElement.value = '';
             this.hasImage = false;
             const container = document.getElementById('picture');
-            container.style.backgroundImage = 'url(/library/demo/_nuxt/img/img_avatar.png)';
+            container.style.backgroundImage = 'url(/library/demo/img/img_avatar.png)';
         },
         setMsgShow() {
             let msgShow = document.getElementById("msgShow");
@@ -230,20 +231,20 @@ export default {
         },
         selectedCard(index) {
             this.isActive = index;
-            // let url = '/_nuxt/img/';
-            let url = '/library/demo/_nuxt/img/';
+            // let url = '/img/';
+            let url =  '/assets/img/';
             switch (index) {
                 case 0: this.cardFileName = 'card7.jpg';
                         break;
-                case 1: this.cardFileName = 'card8.jpg';
+                case 1: this.cardFileName = 'card12.jpg';
                         break;
-                case 2: this.cardFileName = 'card9.jpg';
+                case 2: this.cardFileName = 'card13.jpg';
                         break;
-                case 3: this.cardFileName = 'card10.jpg';
+                case 3: this.cardFileName = 'card8.jpg';
                         break;
-                case 4: this.cardFileName = 'card11.jpg';
+                case 4: this.cardFileName = 'card14.jpg';
                         break;
-                case 5: this.cardFileName = 'card6.jpg';
+                case 5: this.cardFileName = 'card15.jpg';
                         break;
             }
 
@@ -272,7 +273,7 @@ export default {
             setTimeout(() => {
                 let loading = document.getElementById('loading');
                 loading.style.display = 'none';
-                location.href = "/library/demo/share"
+                location.href = "/share"
             }, 2000);
             
         }
@@ -317,13 +318,13 @@ export default {
     border-radius: 10px;
 }
 .picture {
-    width: 65px;
-    height: 65px;
+    width: 85px;
+    height: 85px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
     margin-bottom: 5px;
-    background-image: url(../assets/img/img_avatar.png);
+    background-image: url(/assets/img/img_avatar.png);
     margin-bottom: 8px;
 }
 .s-card {
@@ -457,22 +458,22 @@ select {
 }
 
 .box:nth-child(1) {
-    background-image: url(../assets/img/card7.jpg);
+    background-image: url(/assets/img/card7.jpg);
 }
 .box:nth-child(2) {
-    background-image: url(../assets/img/card8.jpg);
+    background-image: url(/assets/img/card12.jpg);
 }
 .box:nth-child(3) {
-    background-image: url(../assets/img/card9.jpg);
+    background-image: url(/assets/img/card13.jpg);
 }
 .box:nth-child(4) {
-    background-image: url(../assets/img/card10.jpg);
+    background-image: url(/assets/img/card8.jpg);
 }
 .box:nth-child(5) {
-    background-image: url(../assets/img/card11.jpg);
+    background-image: url(/assets/img/card14.jpg);
 }
 .box:nth-child(6) {
-    background-image: url(../assets/img/card6.jpg);
+    background-image: url(/assets/img/card15.jpg);
 }
 
 

@@ -32,6 +32,12 @@ export default {
   buildModules: [
   ],
 
+  env: {
+    ROOT_PATH: process.env.ROOT_PATH,
+    HOME_PATH: process.env.HOME_PATH,
+    ASSETS_PATH_IMG: process.env.ASSETS_PATH_IMG,
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [  
     // Simple usage
@@ -42,9 +48,10 @@ export default {
   build: {
     filenames: {
       img: 'img/[name].[ext]'
-    }
+    },
+    // publicPath: '/',
   },
   router: {
-    base: '/library/demo/'
+    base: '/'
   }
 }

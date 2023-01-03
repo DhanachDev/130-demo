@@ -88,7 +88,7 @@ export default {
             { property: "og:url", content: "https://www3.ago.go.th/library/demo/share" },
             { property: "og:description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ"},
             { property: "og:keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด"},
-            { property: "og:image", content: "https://www3.ago.go.th/library/demo/_nuxt/img/card7.jpg"},
+            { property: "og:image", content: "https://www3.ago.go.th/library/demo/img/card7.jpg"},
             { property: "og:image:type", content: "image/jpg" },
             //   { property: "og:image:width", content: "1200" },
             //   { property: "og:image:height", content: "630" },
@@ -98,7 +98,7 @@ export default {
             { name: "url", content: "https://www3.ago.go.th/library/demo/share" },
             { hid: 'description', name: "description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ" },
             { hid: 'keywords', name: "keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด" },
-            { name: "image", content: "https://www3.ago.go.th/library/demo/_nuxt/img/card7.jpg"},
+            { name: "image", content: "https://www3.ago.go.th/library/demo/img/card7.jpg"},
             { name: "image:type", content: "image/jpg" },
             //   { name: "image:width", content: "1200" },
             //   { name: "image:height", content: "630" }
@@ -116,12 +116,12 @@ export default {
     },
     data() {
         return {
-            cardUrl: "/library/demo/_nuxt/img/card7.jpg", 
+            cardUrl: "/assets/img/card7.jpg", 
             loadedImage: true,
             message: '',
             name: '',
             organization: '',
-            imgUrl: 'https://www3.ago.go.th/library/demo/_nuxt/img/test.png',
+            imgUrl: 'https://www3.ago.go.th/library/demo/img/test.png',
             readyToShare: true,
             dataUrl: null,
         }
@@ -132,7 +132,7 @@ export default {
         document.getElementById("loading").style.display = 'flex';
 
         let card = JSON.parse(localStorage.getItem('cards'));
-        this.cardUrl = "/library/demo/_nuxt/img/" + card.cardFileName;
+        this.cardUrl = "/assets/img/" + card.cardFileName;
         
         if (card.ready) {
             this.message = card.message;
@@ -289,8 +289,8 @@ export default {
     transform: translateX(-50%) translateY(-50%);
 }
 .picture {
-    width: 130px;
-    height: 130px;
+    width: 160px;
+    height: 160px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;

@@ -3,7 +3,7 @@
   <div>
     <div class="center">
       <div class="title">
-        <img src="../assets/img/logo.png" alt="" width="70">
+        <img src="/assets/img/logo.png" alt="" width="70">
         <h1>130 ปี องค์กรอัยการ</h1>      
       </div>
       <div class="content">
@@ -25,17 +25,17 @@
         </NuxtLink>
 
         <a href="#">
-          <button>ตอบคำถามชิงรางวัล</button>
+          <button>กิจกรรมตอบคำถาม</button>
         </a>
       </div>
     </div>    
 
     <div class="f-bt-l">
-      <img src="../assets/img/flower.png" alt="">
+      <img src="/assets/img/flower.png" alt="">
     </div>
 
     <div class="f-bt-r">
-      <img src="../assets/img/flower.png" alt="">
+      <img src="/assets/img/flower.png" alt="">
     </div>
   </div>
 
@@ -48,7 +48,7 @@ export default {
                 {
                     cssText: `
                         body {
-                          background: url(/library/demo/_nuxt/img/bg-seamless.svg) repeat;
+                          background: url(/assets/img/bg-seamless.svg) repeat;
                           background-color: #fdf6e8;
                         }
                     `
@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      path: 'https://www3.ago.go.th/library/demo'
+      path: process.env.ROOT
     }
   }
 }
@@ -87,7 +87,7 @@ button:hover {
   position: fixed;
   bottom: -180px;
   left: -130px;
-  z-index: -1;
+  z-index: 1;
 }
 
 .f-bt-r {
@@ -100,7 +100,7 @@ button:hover {
     filter: fliph; /*IE*/
   bottom: -180px;
   right: -130px;
-  z-index: -1;
+  z-index: 1;
 }
 .center {
   position: absolute;
