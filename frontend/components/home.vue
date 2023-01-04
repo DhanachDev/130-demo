@@ -3,7 +3,7 @@
   <div>
     <div class="center">
       <div class="title">
-        <img src="/assets/img/logo.png" alt="" width="70">
+        <img src="~/assets/img/logo.png" alt="" width="70">
         <h1>130 ปี องค์กรอัยการ</h1>      
       </div>
       <div class="content">
@@ -24,18 +24,18 @@
           <button>ดูการ์ดทั้งหมด</button>
         </NuxtLink>
 
-        <a href="#">
+        <a href="https://forms.gle/o2pee1B1pKnjhGEi7">
           <button>กิจกรรมตอบคำถาม</button>
         </a>
       </div>
     </div>    
 
     <div class="f-bt-l">
-      <img src="/assets/img/flower.png" alt="">
+      <img src="~/assets/img/flower.png" alt="">
     </div>
 
     <div class="f-bt-r">
-      <img src="/assets/img/flower.png" alt="">
+      <img src="~/assets/img/flower.png" alt="">
     </div>
   </div>
 
@@ -48,7 +48,7 @@ export default {
                 {
                     cssText: `
                         body {
-                          background: url(/assets/img/bg-seamless.svg) repeat;
+                          background: url(/library/test/_nuxt/img/bg-seamless.svg) repeat;
                           background-color: #fdf6e8;
                         }
                     `

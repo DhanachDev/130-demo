@@ -53,6 +53,6 @@ export default {
     // publicPath: '/',
   },
   router: {
-    base: '/'
+    base: '/library/test'
   }
 }

@@ -21,7 +21,7 @@
                     <div id="imgCard"></div>
                 </div>
                 <div class="s-card-wp" v-else style="text-align: center;">
-                    <img src="../assets/img/examination.png" alt="" width="150">
+                    <img src="~/assets/img/examination.png" alt="" width="150">
                     <h2>การ์ดของคุณจะแสดงเมื่อผ่านการตรวจสอบเรียบร้อยแล้ว</h2>
                 </div>
             </section>
@@ -58,18 +58,18 @@
             <br>
             <div class="l-b">
                 <div>
-                    <img src="../assets/img/rocket.gif" alt="" width="150">
+                    <img src="~/assets/img/rocket.gif" alt="" width="150">
                 </div>
                 <h2>กรุณารอสักครู่...</h2>
             </div>
         </div>
 
         <div class="f-bt-l">
-            <img src="../assets/img/flower.png" alt="">
+            <img src="~/assets/img/flower.png" alt="">
         </div>
 
         <div class="f-bt-r">
-            <img src="../assets/img/flower.png" alt="">
+            <img src="~/assets/img/flower.png" alt="">
         </div>
     </div>
 
@@ -116,7 +116,7 @@ export default {
     },
     data() {
         return {
-            cardUrl: "/assets/img/card7.jpg", 
+            cardUrl: "~/assets/img/card7.jpg", 
             loadedImage: true,
             message: '',
             name: '',
@@ -132,7 +132,7 @@ export default {
         document.getElementById("loading").style.display = 'flex';
 
         let card = JSON.parse(localStorage.getItem('cards'));
-        this.cardUrl = "/assets/img/" + card.cardFileName;
+        this.cardUrl = "/library/test/_nuxt/img/" + card.cardFileName;
         
         if (card.ready) {
             this.message = card.message;
@@ -334,7 +334,7 @@ export default {
                 align-items: center;
                 flex-direction: column;
                 position: absolute;
-                bottom: 30%;
+                bottom: 18%;
             }
             .add-msg-btn {
                 padding: 20px;
@@ -367,7 +367,7 @@ export default {
 }
 
 .name-show, .org-show {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 20px;
 }
 .btn-wp {
@@ -404,21 +404,21 @@ export default {
 
 .msg-show {
     text-align: center;
-    width: 75%;
+    width: 77%;
     word-break: break-all;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 8px;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 28px;
     line-height: 2rem;
-    max-height: 100px;
+    max-height: 150px;
 }
 
 .name-org {
     text-align: center;
-    width: 75%;
+    width: 77%;
     word-break: break-all;
     max-height: 50px;
     background-color: rgba(255, 255, 255, 0.8);

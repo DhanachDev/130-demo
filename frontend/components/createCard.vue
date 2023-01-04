@@ -7,7 +7,7 @@
             </div>
         </div>
         <section class="_1">
-            <h2>เลือกรูปแบบการ์ดที่ชอบ</h2>
+            <h2>เลือกรูปแบบการ์ด</h2>
             <div class="cards-wp">
                 <div class="cards">
                     <div class="box" :class="{ actived: isActive == 0 }" @click="selectedCard(0)"></div>
@@ -90,11 +90,11 @@
                 <textarea name="message" id="" cols="30" rows="10"></textarea>
         </div> -->
         <div class="f-bt-l">
-            <img src="/assets/img/flower.png" alt="">
+            <img src="~/assets/img/flower.png" alt="">
         </div>
 
         <div class="f-bt-r">
-            <img src="/assets/img/flower.png" alt="">
+            <img src="~/assets/img/flower.png" alt="">
         </div>
     </div>
 </template>
@@ -119,17 +119,20 @@ export default {
         return {
             isActive: 0,   
             // cardUrl: "/img/card1.jpg", 
-            cardUrl: process.env.ASSETS_PATH_IMG + "card7.jpg", 
+            cardUrl: "/library/test/_nuxt/img/card7.jpg", 
             name: null,
             organization: null,
             tel: null,
-            message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 130 ปี องค์กรอัยการ\nขอให้อยู่คู่ประชาชนสืบไป',
+            message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสวันครบรอบ 130 ปี องค์กรอัยการ\nขอให้เป็นองค์กรหลักด้านกฎหมาย\nของประเทศต่อไปอย่างยั่งยืน',
             amount: 0,
             radioChecked: 0,
-            selectedOption: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 130 ปี องค์กรอัยการ\nขอให้อยู่คู่ประชาชนสืบไป',
+            selectedOption: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสวันครบรอบ 130 ปี องค์กรอัยการ\nขอให้เป็นองค์กรหลักด้านกฎหมาย\nของประเทศต่อไปอย่างยั่งยืน',
             options: [
+                'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสวันครบรอบ 130 ปี องค์กรอัยการ\nขอให้เป็นองค์กรหลักด้านกฎหมาย\nของประเทศต่อไปอย่างยั่งยืน',
                 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 130 ปี องค์กรอัยการ\nขอให้อยู่คู่ประชาชนสืบไป',
-                'ขอแสดงความยินดี ขอให้สำนักงานอัยการ\nเป็นที่พึ่งทางกฎหมายให้กับประชาชนสืบไป'
+                'ขอแสดงความยินดี\nขอให้สำนักงานอัยการสูงสุด\nเป็นที่พึ่งทางกฎหมายให้กับประชาชนสืบไป',
+                'เนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ\nขอให้หน่วยงานมีความเจริญก้าวหน้า\nเติบโตขึ้นอย่างยั่งยืน\nและเป็นกำลังสำคัญของประเทศต่อไป'
+
             ],
             maxLength: 110,
             hasImage: false,
@@ -232,7 +235,7 @@ export default {
         selectedCard(index) {
             this.isActive = index;
             // let url = '/img/';
-            let url =  '/assets/img/';
+            let url =  process.env.ASSETS_PATH_IMG;
             switch (index) {
                 case 0: this.cardFileName = 'card7.jpg';
                         break;
@@ -273,7 +276,7 @@ export default {
             setTimeout(() => {
                 let loading = document.getElementById('loading');
                 loading.style.display = 'none';
-                location.href = "/share"
+                location.href = "/library/test/share"
             }, 2000);
             
         }
@@ -324,7 +327,7 @@ export default {
     background-position: center;
     border-radius: 50%;
     margin-bottom: 5px;
-    background-image: url(/assets/img/img_avatar.png);
+    background-image: url(~/assets/img/img_avatar.png);
     margin-bottom: 8px;
 }
 .s-card {
@@ -423,9 +426,9 @@ select {
 }
 .msg-show {
     text-align: center;
-    width: 75%;
+    width: 77%;
     word-break: break-all;
-    max-height: 50px;
+    max-height: 90px;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 8px;
     border-radius: 10px;
@@ -437,7 +440,7 @@ select {
 
 .name-org {
     text-align: center;
-    width: 75%;
+    width: 77%;
     word-break: break-all;
     max-height: 50px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -458,22 +461,22 @@ select {
 }
 
 .box:nth-child(1) {
-    background-image: url(/assets/img/card7.jpg);
+    background-image: url(~/assets/img/card7.jpg);
 }
 .box:nth-child(2) {
-    background-image: url(/assets/img/card12.jpg);
+    background-image: url(~/assets/img/card12.jpg);
 }
 .box:nth-child(3) {
-    background-image: url(/assets/img/card13.jpg);
+    background-image: url(~/assets/img/card13.jpg);
 }
 .box:nth-child(4) {
-    background-image: url(/assets/img/card8.jpg);
+    background-image: url(~/assets/img/card8.jpg);
 }
 .box:nth-child(5) {
-    background-image: url(/assets/img/card14.jpg);
+    background-image: url(~/assets/img/card14.jpg);
 }
 .box:nth-child(6) {
-    background-image: url(/assets/img/card15.jpg);
+    background-image: url(~/assets/img/card15.jpg);
 }
 
 
@@ -504,7 +507,7 @@ section {
                 align-items: center;
                 flex-direction: column;
                 position: absolute;
-                bottom: 25%;
+                bottom: 18%;
             }
             .add-msg-btn {
                 padding: 20px;
