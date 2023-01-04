@@ -1,4 +1,5 @@
 export default {
+  mode: "universal",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: '130 ปี องค์กรอัยการ',
