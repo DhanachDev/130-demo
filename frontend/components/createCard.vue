@@ -44,7 +44,7 @@
                     </p>
                     <p class="noti" v-show="radioChecked == 1">
                         การ์ดของคุณจะแสดงเมื่อผ่านการตรวจสอบเรียบร้อยแล้ว
-                    </p>                        
+                    </p>
                     </div>
 
                     <div>
@@ -54,17 +54,23 @@
                     </div>
 
                     <div class="msg">
+                        <p v-show="radioChecked == 1">*</p>
                         <textarea name="" id="msg" rows="3" @keyup="countMsg()" v-model="message" :maxLength="maxLength" placeholder="คำอวยพร" :disabled="radioChecked == 0"> </textarea>
                         <span class="counter" v-show="radioChecked == 1">{{amount}}/110</span>      
                     </div>
                     <div class="contact">
-                        <input type="text" placeholder="ชื่อ - นามสกุล" id="name" v-model="name" @keyup="setName()">
-                        <input type="text" placeholder="สำนักงาน" id="org" v-model="organization" @keyup="setOrg()">
+                        <div class="ip-wp">
+                            <p>*</p>
+                            <input type="text" placeholder="ชื่อ - นามสกุล" id="name" v-model="name" @keyup="setName()">
+                        </div>
+                        <div class="ip-wp">
+                            <input type="text" placeholder="หน่วยงาน" id="org" v-model="organization" @keyup="setOrg()">
+                        </div>
+                        
                         <!-- <input type="text" placeholder="เบอร์ติดต่อกลับ (กรณีต้องการลุ้นรางวัล)" id="tel" v-model="tel"> -->
-
                         <div class="upload-img">
                             <label for="files" class="btn">อัพโหลดรูปภาพ<span v-if="hasImage">แล้ว >> </span></label>
-                            <input type="file" id="image-file" accept=".jpg, .jpeg, .png" @change="fileUploaded()" v-show="!hasImage">    
+                            <input type="file" name="avatar" id="image-file" accept=".jpg, .jpeg, .png" @change="fileUploaded()" v-show="!hasImage">    
                             <span v-show="hasImage" style="color: red; cursor: pointer; text-decoration: underline;" @click="removeImage()">ลบรูปภาพ</span>                        
                         </div>
 
@@ -100,6 +106,7 @@
 </template>
 
 <script>
+import imageCompression from 'browser-image-compression'
 
 export default {
     head() {
@@ -112,14 +119,15 @@ export default {
                         }
                     `
                 }
-            ]
+            ],
+            title: "เขียนการ์ดอวยพร | 130 ปี องค์กรอัยการ"
         }
     },
     data() {
         return {
             isActive: 0,   
             // cardUrl: "/img/card1.jpg", 
-            cardUrl: "/library/test/_nuxt/img/card7.jpg", 
+            cardUrl: require("~/assets/img/card7.jpg"), 
             name: null,
             organization: null,
             tel: null,
@@ -137,6 +145,7 @@ export default {
             maxLength: 110,
             hasImage: false,
             cardFileName: 'card7.jpg',
+            avatarAsset: require("~/assets/img/img_avatar.png")
         }
     },
     mounted() {
@@ -145,45 +154,51 @@ export default {
         loading.style.display = 'none';
         localStorage.removeItem("dataURL");
         localStorage.removeItem("cards");
-        console.log("env = ",process.env.HOME_PATH);
     },
     methods: {
         fileUploaded() {
             const inputElement = document.getElementById('image-file');
                 // Get the selected file
-                const file = inputElement.files[0];
 
-                // Check if the file is a JPEG, JPEG, or PNG
-                if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                try {
+                    const file = inputElement.files[0];
+                    
+                    // Check if the file is a JPEG, JPEG, or PNG
+                    if (file.type === 'image/jpeg' || file.type === 'image/png') {
 
-                    // Create a FileReader object
-                    const reader = new FileReader();
+                        // Create a FileReader object
+                        const reader = new FileReader();
 
-                    // Add an event listener for when the file has been read
-                    reader.addEventListener('load', function() {
-                        // Get the data URL of the file
-                        const dataURL = reader.result;
+                        // Add an event listener for when the file has been read
+                        reader.addEventListener('load', function() {
+                            // Get the data URL of the file
+                            const dataURL = reader.result;
 
-                        // Get the container element
-                        const container = document.getElementById('picture');
+                            // Get the container element
+                            const container = document.getElementById('picture');
 
-                        // Set the background-image property of the container
-                        container.style.backgroundImage = `url(${dataURL})`;
-                        localStorage.setItem("dataURL", JSON.stringify(dataURL));
-                        
-                    });
+                            // Set the background-image property of the container
+                            container.style.backgroundImage = `url(${dataURL})`;
+                            localStorage.setItem("dataURL", JSON.stringify(dataURL));
+                            
+                        });
 
-                    // Read the file as a data URL
-                    reader.readAsDataURL(file);
-                    this.hasImage = true;
+                        // Read the file as a data URL
+                        reader.readAsDataURL(file);
+                        this.hasImage = true;
+                    } else {
+                        alert("อัพโหลดไฟล์รูปภาพเท่านั้น")
+                    }                    
+                } catch (error) {
                 }
+
         },
         removeImage() {
             const inputElement = document.getElementById('image-file');
             inputElement.value = '';
             this.hasImage = false;
             const container = document.getElementById('picture');
-            container.style.backgroundImage = 'url(/library/demo/img/img_avatar.png)';
+            container.style.backgroundImage = 'url(' + this.avatarAsset +')';
         },
         setMsgShow() {
             let msgShow = document.getElementById("msgShow");
@@ -234,8 +249,6 @@ export default {
         },
         selectedCard(index) {
             this.isActive = index;
-            // let url = '/img/';
-            let url =  process.env.ASSETS_PATH_IMG;
             switch (index) {
                 case 0: this.cardFileName = 'card7.jpg';
                         break;
@@ -251,33 +264,79 @@ export default {
                         break;
             }
 
-            this.cardUrl = url + this.cardFileName;
+            this.cardUrl = require('~/assets/img/' + this.cardFileName);
         },
-        send() {
-            let loading = document.getElementById('loading');
-            loading.style.display = 'flex';
+        async send() {
+            if (this.name && this.message) {
+                if (this.name.replace(/\s/g, '').length > 0 && this.message.replace(/\s/g, '').length > 0) {
 
-            let dataUrl = JSON.parse(localStorage.getItem('dataUrl'));
+                    let loading = document.getElementById('loading');
+                    loading.style.display = 'flex';
 
-            let obj = {
-                message: this.message,
-                name: this.name,
-                organization: this.organization,
-                tel: this.tel,
-                dataUrl: dataUrl,
-                cardFileName: this.cardFileName,
-                ready: this.radioChecked == 0 && !this.hasImage
+                    let ready = this.radioChecked == 0 && !this.hasImage;
+
+                    let fileInputElement = document.getElementById('image-file');
+                    let formData = new FormData();
+
+                    let imageFile = fileInputElement.files[0];
+                    let compressedFile;
+                    if (imageFile.size / 1024 > 500) {
+                        const options = {
+                            maxSizeMB: 0.5,
+                            maxWidthOrHeight: 1000,
+                            useWebWorker: true,
+                            fileType: "image/jpeg"
+                        }
+
+                        try {
+                            compressedFile = await imageCompression(imageFile, options);
+                            imageFile = compressedFile;
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+
+                    formData.append('avatar', imageFile);
+                    formData.append('message', this.message);
+                    formData.append('name', this.name);
+
+                    if (this.organization || null) {
+                        formData.append('organization', this.organization);
+                    }
+
+                    formData.append('cardFileName', this.cardFileName);
+                    formData.append('ready', ready);
+                    formData.append('statusMsg', this.radioChecked === 0 ? 'approved' : 'review');
+                    formData.append('statusImg', fileInputElement.files[0] ? 'review' : 'approved');
+                    
+                    this.$axios.post('/', formData, {
+                        headers: {
+                        'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(res => {
+                        setTimeout(() => {
+                            if (res.status == 200) {
+                                localStorage.setItem("_id",JSON.stringify(res.data["_id"]));
+
+                                console.log("res = ", res.data)
+
+                                // let loading = document.getElementById('loading');
+                                // loading.style.display = 'none';
+                                // location.href = "/share?id=" + res.data._id
+                            } else {
+                                alert("ไม่สามารถส่งการ์ดได้ กรุณาลองอีกครั้ง")
+                            }                            
+                        }, 2000);
+
+                    });
+
+                } else {
+                    alert("กรอกชื่อ และข้อความอวยพร");
+                }
+            } else {
+                alert("กรอกชื่อ และข้อความอวยพร");
             }
-
-            // console.log(obj);
-
-            localStorage.setItem("cards", JSON.stringify(obj));
-
-            setTimeout(() => {
-                let loading = document.getElementById('loading');
-                loading.style.display = 'none';
-                location.href = "/library/test/share"
-            }, 2000);
+            
             
         }
     }
@@ -295,6 +354,15 @@ export default {
   unicode-range: U+0E01-0E5B, U+200C-200D, U+25CC;
 }
 
+.ip-wp {
+    position: relative;
+
+    p {
+        position: absolute;
+        color: red;
+        right: 3%;
+    }
+}
 .l-b {
     background-color: white;
     padding: 20px 35px;
@@ -423,6 +491,12 @@ select {
         color: gray;
         z-index: 999;
     }
+
+    p {
+        position: absolute;
+        color: red;
+        right: 5%;
+    }
 }
 .msg-show {
     text-align: center;
@@ -484,6 +558,12 @@ select {
 section {
     padding: 10px 0;
 }
+
+._1, ._2, ._3 {
+    position: relative;
+    z-index: 2;
+}
+
 ._2 {
     margin-top: 10px;
     .s-card-wp {

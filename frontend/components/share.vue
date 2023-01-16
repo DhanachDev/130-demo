@@ -6,10 +6,8 @@
                     <div v-if="loadedImage">
                         <div class="s-card" :style="{ backgroundImage: 'url(' + cardUrl + ')'}" id="sCard">
                                 <div class="input-wp">
-                                    <div class="picture" id="picture" v-if="dataUrl">
-                                    </div>
-                                    <div class="msg-show" id="msgShow">
-                                    </div>
+                                    <div class="picture" id="avatar"></div>
+                                    <div class="msg-show" id="msgShow"></div>
                                     <div class="name-org">
                                         <div class="name-show" id="nameShow">{{name}}</div>
                                         <div class="org-show" id="orgShow">{{organization}}</div>
@@ -31,8 +29,8 @@
                         <a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&u=https%3A%2F%2Fwww3.ago.go.th%2Flibrary%2Fdemo%2Fshare&display=popup&ref=plugin&src=share_button" target="popup">
                             <button class="fb-share">แชร์ไปยัง Facebook</button>
                         </a>
-                        <a href="#" id="download">
-                            <button>ดาวน์โหลดรูปภาพ</button>
+                        <a href="javascript:void(0)" id="download">
+                            <button @click="download()">ดาวน์โหลดรูปภาพ</button>
                         </a>                    
                     </template>
 
@@ -85,23 +83,23 @@ export default {
             // facebook
             { property: "og:title", content: "130 ปีองค์กรอัยการ"},
             { property: "og:type", content: "article" },
-            { property: "og:url", content: "https://www3.ago.go.th/library/demo/share" },
+            { property: "og:url", content: "localhost:4000" },
             { property: "og:description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ"},
             { property: "og:keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด"},
-            { property: "og:image", content: "https://www3.ago.go.th/library/demo/img/card7.jpg"},
-            { property: "og:image:type", content: "image/jpg" },
-            //   { property: "og:image:width", content: "1200" },
-            //   { property: "og:image:height", content: "630" },
+            { property: "og:image", content: "http://localhost:4000/assets/thumbnail.jpg"},
+            { property: "og:image:type", content: "image/jpeg" },
+              { property: "og:image:width", content: "1200" },
+              { property: "og:image:height", content: "630" },
             //web
             { name: "title", content: "130 ปีองค์กรอัยการ" },
             { name: "type", content: "article" },
-            { name: "url", content: "https://www3.ago.go.th/library/demo/share" },
+            { name: "url", content: "localhost:4000" },
             { hid: 'description', name: "description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ" },
             { hid: 'keywords', name: "keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด" },
-            { name: "image", content: "https://www3.ago.go.th/library/demo/img/card7.jpg"},
-            { name: "image:type", content: "image/jpg" },
-            //   { name: "image:width", content: "1200" },
-            //   { name: "image:height", content: "630" }
+            { name: "image", content: "http://localhost:4000/assets/thumbnail.jpg"},
+            { name: "image:type", content: "image/jpeg" },
+              { name: "image:width", content: "1200" },
+              { name: "image:height", content: "630" }
             ],
             style: [
                 {
@@ -116,94 +114,109 @@ export default {
     },
     data() {
         return {
-            cardUrl: "~/assets/img/card7.jpg", 
+            cardUrl: require("~/assets/img/card7.jpg"), 
             loadedImage: true,
             message: '',
             name: '',
             organization: '',
-            imgUrl: 'https://www3.ago.go.th/library/demo/img/test.png',
             readyToShare: true,
-            dataUrl: null,
+            avatar: null,
         }
     },
     mounted() {
 
-        
         document.getElementById("loading").style.display = 'flex';
 
-        let card = JSON.parse(localStorage.getItem('cards'));
-        this.cardUrl = "/library/test/_nuxt/img/" + card.cardFileName;
-        
-        if (card.ready) {
-            this.message = card.message;
+        let _id;
+        let id = new URLSearchParams(window.location.search).get('id');
 
-            let msgShow = document.getElementById("msgShow");
-            msgShow.innerHTML = this.message.replace(/\n\r?/g, '<br />');
+        if (id) _id = id;
+        else {
+            location.href = "/";
+        }
 
-            this.name = card.name;
-            this.organization = card.organization;
-            let dataURL = localStorage.getItem('dataURL');
-            this.dataURL = dataURL;
+        this.$axios.get('/' + _id).then(res =>{ 
+            this.cardUrl = require("/assets/img/" + res.data.cardFileName);
 
-            if (this.dataURL) {
-                const container = document.getElementById('picture');
+            if (res.data.ready || ( res.data.statusMsg == 'approved' && res.data.statusImg == 'approved')) {
 
-                // Set the background-image property of the container
-                container.style.backgroundImage = `url(${dataURL})`;  
-            }
+                let self = this;
+
+                this.message = res.data.message;
+                this.avatar = process.env.STATIC_URL + res.data.avatar
+
+                if (res.data.avatar) {
+                    const container = document.getElementById('avatar');
+                    // Set the background-image property of the container
+                    
+                    console.log("container = ", container)
+                   this.toDataUrl(this.avatar, function(myBase64) {
+                        console.log(myBase64)
+                        container.style.backgroundImage = `url(${myBase64})`; 
+                    });
+                } else {
+                    document.getElementById("avatar").style.display = 'none';
+                }
+
+                let msgShow = document.getElementById("msgShow");
+                msgShow.innerHTML = this.message.replace(/\n\r?/g, '<br />');
+
+                this.name = res.data.name;
+                this.organization = res.data.organization;
+                    
+                // Get the div element
+                const divElement = document.getElementById('sCard');
+
+                // Set the font-family style of the div element
+                divElement.style.fontFamily = 'Prompt';
+
+
+                const toImgArea = document.getElementById('sCard');
+
+                // To avoid the image will be cut by scroll, we need to scroll top before html2canvas.
+                window.pageYOffset = 0;
+                document.documentElement.scrollTop = 0
+                document.body.scrollTop = 0
                 
-            // Get the div element
-            const divElement = document.getElementById('sCard');
+                
+                // transform to canvas
 
-            // Set the font-family style of the div element
-            divElement.style.fontFamily = 'Prompt';
+                setTimeout(() => {
+                    html2canvas(toImgArea, {
+                        allowTaint: true,
+                        taintTest: false,
+                        type: "view",
+                    }).then(function (canvas) {
+                        const sreenshot = document.getElementById('imgCard');
+                        
+                        // setting the canvas width  
+                        canvas.style.width = "350px";
+                        canvas.style.height = "481px";
+                        canvas.id = "canvasImg";
+
+                        // append the canvas in the place that you want to show this image.  
+                        sreenshot.appendChild(canvas);
 
 
-            const toImgArea = document.getElementById('sCard');
+                        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                        // downloadIcon.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                        // downloadIcon.download = 'card.jpg';
 
-            // To avoid the image will be cut by scroll, we need to scroll top before html2canvas.
-            window.pageYOffset = 0;
-            document.documentElement.scrollTop = 0
-            document.body.scrollTop = 0
-            
-            let self = this;
-            // transform to canvas
+                        self.loadedImage = false;
+                        document.getElementById("loading").style.display = 'none';
+                    });
+                }, 1000);
 
-            setTimeout(() => {
-                html2canvas(toImgArea, {
-                    allowTaint: true,
-                    taintTest: false,
-                    type: "view",
-                }).then(function (canvas) {
-                    const sreenshot = document.getElementById('imgCard');
-                    const downloadIcon = document.getElementById('download');
-                    
-                    // setting the canvas width  
-                    canvas.style.width = "350px";
-                    canvas.style.height = "481px";
+                
+            } else {
+                this.readyToShare = false;
+                document.getElementById("loading").style.display = 'none';
+            }  
 
-                    // append the canvas in the place that you want to show this image.  
-                    sreenshot.appendChild(canvas);
-                    // console.log( downloadIcon);
-
-                    // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-                    downloadIcon.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                    downloadIcon.download = 'card.jpg';
-
-                    //     //*****save image to DB*****
-                    self.loadedImage = false;
-                    document.getElementById("loading").style.display = 'none';
-                });
-            }, 2000);
-            
-   
-           
-
-                    
-        } else {
-            this.readyToShare = false;
-            document.getElementById("loading").style.display = 'none';
-        }        
+        }).catch(error => {
+            console.log(error)
+            alert("เกิดข้อผิดพลาด ลองสร้างการ์ดใหม่อีกครั้ง")
+        })  
     },
     beforeMount() {
         if(this.$route.query.fbclid) {
@@ -211,38 +224,29 @@ export default {
         }
     },
     methods: {
-    //     async downloadImg() {
-    //         try {
-    //             // Make a GET request to the image URL
-    //             const response = await fetch(this.imgUrl);
-
-    //             // Check if the response is successful
-    //             if (response.ok) {
-    //             // Get the image data as a Blob
-    //             const blob = await response.blob();
-
-    //             // Create a URL object that can be used to download the image
-    //             const url = URL.createObjectURL(blob);
-
-    //             // Create a link element
-    //             const link = document.createElement('a');
-    //             link.href = url;
-    //             link.download = 'image.jpg'; // Set the file name**********
-
-    //             // Add the link to the body and click it to trigger the download
-    //             document.body.appendChild(link);
-    //             link.click();
-
-    //             // Clean up
-    //             URL.revokeObjectURL(url);
-    //             document.body.removeChild(link);
-    //             } else {
-    //             console.error('Error:', response.status);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error:', error);
-    //         }
-    //     }
+        download() {
+            let downloadLink = document.createElement('a');
+            downloadLink.setAttribute('download', this.name + '.png');
+            let canvas = document.getElementById('canvasImg');
+            let dataURL = canvas.toDataURL('image/png');
+            let url = dataURL.replace(/^data:image\/png/,'data:application/octet-stream');
+            // downloadLink.setAttribute('href', url);
+            // downloadLink.click();
+            window.location.href = url
+        },
+        toDataUrl(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    callback(reader.result);
+                }
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.open('GET', url);
+            xhr.responseType = 'blob';
+            xhr.send();
+        }
     }
   
 };
@@ -272,7 +276,6 @@ export default {
     left: 0;
     top: 0;
     z-index: 5;
-    display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(255, 255, 255);
@@ -287,6 +290,7 @@ export default {
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
 }
 .picture {
     width: 160px;
@@ -367,8 +371,8 @@ export default {
 }
 
 .name-show, .org-show {
-    font-size: 22px;
-    line-height: 20px;
+    font-size: 26px;
+    line-height: 24px;
 }
 .btn-wp {
     display: flex;

@@ -14,7 +14,9 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Prompt&display=swap" }
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Prompt&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Charmonman&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Charm&display=swap" }
     ]
   },
 
@@ -37,22 +39,30 @@ export default {
     ROOT_PATH: process.env.ROOT_PATH,
     HOME_PATH: process.env.HOME_PATH,
     ASSETS_PATH_IMG: process.env.ASSETS_PATH_IMG,
+    API: process.env.API,
+    STATIC_URL: process.env.STATIC_URL,
+    ASSETS_URL: process.env.ASSETS_URL,
+    CARD_URL: process.env.CARD_URL
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [  
     // Simple usage
     'nuxt-buefy',
+    "@nuxtjs/axios",
   ],
 
+  axios: {
+    baseURL: 'http://localhost:4000/api/cards', // Used as fallback if no runtime config is provided
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    filenames: {
-      img: 'img/[name].[ext]'
-    },
+    // filenames: {
+    //   img: 'img/[name].[ext]'
+    // },
     // publicPath: '/',
   },
   router: {
-    base: '/library/test'
+    base: '/'
   }
 }

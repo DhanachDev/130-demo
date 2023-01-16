@@ -41,6 +41,7 @@
 
 </template>
 <script>
+import axios from 'axios'
 export default {
   head() {
     return {
@@ -48,7 +49,7 @@ export default {
                 {
                     cssText: `
                         body {
-                          background: url(/library/test/_nuxt/img/bg-seamless.svg) repeat;
+                          background: url(http://localhost:4000/assets/bg-seamless.svg) repeat;
                           background-color: #fdf6e8;
                         }
                     `
@@ -60,24 +61,28 @@ export default {
     return {
       path: process.env.ROOT
     }
+  },
+  mounted() {
+
   }
 }
 </script>
 <style lang="scss" scoped>
 
-// * {
-//     font-family: 'Prompt';
-//     font-weight: 200;
-// }
+* {
+    font-family: 'Charm';
+}
 
-// body {
-    
-//     // background: url(../../assets/img/bottom-seamless.svg) no-repeat bottom;
-//     background-size: cover;
-//     background-attachment: fixed;
-//     background-color: #f1f1f1;
-// }
+button {
+  font-family: 'Charmonman';
+  font-weight: 400;
+}
 
+
+
+h1 {
+  font-size: 2.5em;
+}
 button:hover {
   color: white;
   background: rgb(223,192,111);
@@ -108,6 +113,7 @@ button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   min-width: 300px;
+  z-index: 2;
 }
 
 .title {
@@ -124,7 +130,7 @@ a {
   button {
     padding: 20px;
     border-radius: 60px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border: none;
     width: 100%;
   }

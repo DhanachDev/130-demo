@@ -1,15 +1,15 @@
 <template>
     <div class="_mom">
         <div class="_search">
-            <input type="text" name="search" id="search" placeholder="กรอกชื่อหรือสำนักงานเพื่อค้นหา" @keyup="setCards()" v-model="keyword">
+            <input type="text" name="search" id="search" placeholder="กรอกชื่อหรือสำนักงานเพื่อค้นหา" @keyup="setCards(1)" v-model="keyword">
         </div>
         
         <div class="cards">
             <template  v-for="card in cardsShow">
-                <NuxtLink to="/share">
-                    <div class="s-card" :style="{ backgroundImage: 'url(' + (cardPath + card.cardName) + ')'}">
+                <NuxtLink :to="'/share?id=' + card._id">
+                    <div class="s-card" :style="{ backgroundImage: 'url(' + cardUrl + card.cardFileName +')'}">
                         <div class="input-wp">
-                            <div class="picture" :style="{ backgroundImage: 'url(' + card.picture + ');'}">
+                            <div class="picture" :style="{ backgroundImage: 'url(' + staticUrl + card.avatar +')'}" v-if="card.statusImg == 'approved'">
                             </div>
                             <div class="msg-show" v-html="replaceMsg(card.message)">
                             </div>
@@ -23,12 +23,13 @@
             </template> 
         </div>
         <br>
-        <a href="/library/test" style="text-align: center;">
-            <button>กลับหน้าหลัก</button>
+        <a href="/" style="    text-align: center; width: 300px; display: flex; margin: 0 auto;">
+            <button style="background-color: #e67c35; color: white;">กลับหน้าหลัก</button>
         </a>
         <br>
         <client-only>
-            <b-pagination
+            <b-pagination 
+                @change="changePage($event)"
                 :total="total"
                 v-model="current"
                 :range-before="rangeBefore"
@@ -61,63 +62,23 @@ export default {
                 {
                     cssText: `
                         body {
-                            background: url(/library/test/_nuxt/img/bottom-seamless.svg) no-repeat bottom;
-                            background-size: cover;
-                            background-attachment: fixed;
                             background-color: #f1f1f1;
                         }
                     `
                 }
-            ]
+            ],
+            title: "ค้นหา | 130 ปี องค์กรอัยการ"
         }
     },
     data() {
         return {
             // default 100 records
-            cards: [
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'one', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'two', organization: 'สลธ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'three', organization: 'คลัง.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'four', organization: 'สำนักงานอัยการจังหวัดอุบลราชธานี.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'seven', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'eight', organization: 'สวบ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'nine', organization: 'สวบ.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'ten', organization: 'สวบ.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'one', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'two', organization: 'สลธ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'three', organization: 'คลัง.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'four', organization: 'สำนักงานอัยการจังหวัดอุบลราชธานี.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'seven', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'eight', organization: 'สวบ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'nine', organization: 'สวบ.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'ten', organization: 'สวบ.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'one', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'two', organization: 'สลธ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'three', organization: 'คลัง.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'four', organization: 'สำนักงานอัยการจังหวัดอุบลราชธานี.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-                { cardName: 'card7.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'seven', organization: 'สวบ.'},
-                { cardName: 'card8.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'eight', organization: 'สวบ.'},
-                { cardName: 'card9.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'nine', organization: 'สวบ.'},
-                { cardName: 'card10.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'ten', organization: 'สวบ.'},
-                { cardName: 'card11.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'five', organization: 'สวบ.'},
-                { cardName: 'card6.jpg' , picture: 'www3.ago.go.th/library/test/_nuxt/img/img_avatar.png', message: 'ขอแสดงความยินดีด้วยอย่างยิ่ง\nในโอกาสครบรอบ 13 ปี องค์รอัยการ\nขอให้อยู่คู่ประชาชนสืบไป', name: 'six', organization: 'สวบ.'},
-            ],
-            keyword: null,
+            keyword: '',
             cardsShow: [],
-            cardPath: '/library/test/_nuxt/img/',
-            total: 1500,
-            current: 10,
-            perPage: 100,
+            cardPath: require('~/assets/img/card7.jpg'),
+            total: 20,
+            current: 1,
+            perPage: 20,
             rangeBefore: 3,
             rangeAfter: 1,
             order: 'is-centered',
@@ -128,11 +89,13 @@ export default {
             prevIcon: 'chevron-left',
             nextIcon: 'chevron-right',
             inputPosition: '',
-            inputDebounce: ''
+            inputDebounce: '',
+            staticUrl: process.env.STATIC_URL,
+            cardUrl: process.env.CARD_URL
         }
     }, 
     mounted() {
-        this.setCards();
+        this.setCards(this.current);
     },
     methods: {
         replaceMsg(txt) {
@@ -142,20 +105,28 @@ export default {
                 return txt;
             }
         },
-        setCards() {
-            let cardsMock = JSON.parse(JSON.stringify(this.cards));
-            let cards = cardsMock;
-            if (this.keyword) {
+        setCards(current) {
 
-                // call api search
-                cards = cardsMock.filter(el => {
-                    return el.name.includes(this.keyword) || el.organization.includes(this.keyword);
-                });
-            }
+            this.$axios.get('/show/cards/' + current + '/' + this.perPage + '?q=' + this.keyword).then(res => {
+                let cardsMock = JSON.parse(JSON.stringify(res.data.cards));
 
-            this.cardsShow = cards;
+                this.total = Number(res.data.total);
+                this.perPage = Number(res.data.perPage);
+                this.current = Number(res.data.current);
+
+                let cards = cardsMock;
+                this.cardsShow = cards;
+            })
+        },
+        changePage(page) {
+
+            var VueScrollTo = require('vue-scrollto');
+            VueScrollTo.scrollTo('#search', 500, { easing: 'linear', offset: -240 } );
+
+            setTimeout(() => {
+                this.setCards(page);                
+            }, 500);
         }
-        
     }
 }
 </script>
@@ -237,7 +208,7 @@ button {
         align-items: center;
         flex-direction: column;
         position: absolute;
-        bottom: 25%;
+        bottom: 18%;
     }
     .add-msg-btn {
         padding: 20px;
@@ -269,9 +240,9 @@ button {
 
 .msg-show {
     text-align: center;
-    width: 75%;
+    width: 77%;
     word-break: break-all;
-    max-height: 50px;
+    max-height: 90px;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 8px;
     border-radius: 10px;
@@ -291,6 +262,7 @@ button {
     border-radius: 10px;
     overflow: hidden;
     line-height: 14px;
+    font-size: 14px;
 }
 
 .picture {
@@ -300,7 +272,7 @@ button {
     background-position: center;
     border-radius: 50%;
     margin-bottom: 5px;
-    background-image: url(../assets/img/img_avatar.png);
+    background-image: url(~/assets/img/img_avatar.png);
     margin-bottom: 8px;
 }
 
