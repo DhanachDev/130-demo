@@ -15,7 +15,11 @@ const cardSchema = new Schema({
         type: String,
         required: false
     },
-    image: {
+    avatar: {
+        type: String,
+        required: false
+    },
+    cardImage: {
         data: Buffer,
         contentType: String,
         required: false
@@ -26,6 +30,14 @@ const cardSchema = new Schema({
     },
     ready: {
         type: Boolean,
+        required: true
+    },
+    statusMsg: {
+        type: String,
+        required: true
+    },
+    statusImg: {
+        type: String,
         required: true
     }
 }, { timestamps: true })
