@@ -9,8 +9,9 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'description', name: 'description', content: 'ร่วมแสดงความยินดีและเขียนการ์ดอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ' },
+      { hid: 'keywords', name: "keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด" },
+      { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

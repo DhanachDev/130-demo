@@ -26,7 +26,7 @@
             <section class="_3">
                 <div class="btn-wp">   
                     <template v-if="readyToShare">
-                        <a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&u=https%3A%2F%2Fwww3.ago.go.th%2Flibrary%2Fdemo%2Fshare&display=popup&ref=plugin&src=share_button" target="popup">
+                        <a href="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fwww.oag130th-anniversary-ecards.ago.go.th&display=popup&ref=plugin&src=share_button" target="popup">
                             <button class="fb-share">แชร์ไปยัง Facebook</button>
                         </a>
                         <a href="javascript:void(0)" id="download">
@@ -83,20 +83,20 @@ export default {
             // facebook
             { property: "og:title", content: "130 ปีองค์กรอัยการ"},
             { property: "og:type", content: "article" },
-            { property: "og:url", content: "localhost:4000" },
+            { property: "og:url", content: "https://www.oag130th-anniversary-ecards.ago.go.th/" },
             { property: "og:description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ"},
             { property: "og:keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด"},
-            { property: "og:image", content: "http://localhost:4000/assets/thumbnail.jpg"},
+            { property: "og:image", content: "https://www.oag130th-anniversary-ecards.ago.go.th/assets/thumbnail.jpg"},
             { property: "og:image:type", content: "image/jpeg" },
               { property: "og:image:width", content: "1200" },
               { property: "og:image:height", content: "630" },
             //web
             { name: "title", content: "130 ปีองค์กรอัยการ" },
             { name: "type", content: "article" },
-            { name: "url", content: "localhost:4000" },
+            { name: "url", content: "https://www.oag130th-anniversary-ecards.ago.go.th/" },
             { hid: 'description', name: "description", content: "ร่วมแสดงความยินดีและอวยพรเนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ" },
             { hid: 'keywords', name: "keywords", content: "130 ปี อัยการ, 130 ปี องค์กรอัยการ, องค์กรอัยการ, อัยการ, ครบรอบ 130 ปี, ครบรอบองค์กรอัยการ, เมษายน, กฎหมาย, สำนักงานอัยการสูงสุด, อัยการสูงสุด" },
-            { name: "image", content: "http://localhost:4000/assets/thumbnail.jpg"},
+            { name: "image", content: "https://oag130th-anniversary-ecards.ago.go.th/assets/thumbnail.jpg"},
             { name: "image:type", content: "image/jpeg" },
               { name: "image:width", content: "1200" },
               { name: "image:height", content: "630" }

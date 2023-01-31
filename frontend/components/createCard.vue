@@ -142,7 +142,7 @@ export default {
                 'เนื่องในโอกาสครบรอบ 130 ปี องค์กรอัยการ\nขอให้หน่วยงานมีความเจริญก้าวหน้า\nเติบโตขึ้นอย่างยั่งยืน\nและเป็นกำลังสำคัญของประเทศต่อไป'
 
             ],
-            maxLength: 110,
+            maxLength: 90,
             hasImage: false,
             cardFileName: 'card7.jpg',
             avatarAsset: require("~/assets/img/img_avatar.png")
@@ -318,11 +318,9 @@ export default {
                             if (res.status == 200) {
                                 localStorage.setItem("_id",JSON.stringify(res.data["_id"]));
 
-                                console.log("res = ", res.data)
-
-                                // let loading = document.getElementById('loading');
-                                // loading.style.display = 'none';
-                                // location.href = "/share?id=" + res.data._id
+                                let loading = document.getElementById('loading');
+                                loading.style.display = 'none';
+                                location.href = "/share?id=" + res.data._id
                             } else {
                                 alert("ไม่สามารถส่งการ์ดได้ กรุณาลองอีกครั้ง")
                             }                            
